@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
-          includeAssets: ['icon.svg'],
+          includeAssets: ['icon.svg', 'elsa.jpg'],
           manifestFilename: 'manifest.json',
           manifest: {
             name: "Elsa's English Teacher",
