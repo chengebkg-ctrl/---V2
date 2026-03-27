@@ -303,7 +303,7 @@ const App: React.FC = () => {
               <div className="absolute -top-3 -right-3 text-4xl animate-sparkle z-20 drop-shadow-md">✨</div>
               <div className="w-full h-full rounded-[1.8rem] overflow-hidden relative z-10 shadow-sm bg-sky-50 flex items-center justify-center">
                 <img 
-                  src={`/elsa.jpg?t=${Date.now()}`}
+                  src="/elsa.jpg"
                   alt="Elsa" 
                   className="w-full h-full object-cover object-top absolute inset-0 z-20"
                   referrerPolicy="no-referrer"
