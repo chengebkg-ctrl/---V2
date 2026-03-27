@@ -1,0 +1,114 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - email: string (required, valid email)
+    //   - createdAt: timestamp (required, immutable)
+    //
+    // Collection: users/{userId}/words
+    // Document ID: {wordId}
+    // Fields:
+    //   - original: string (required, max length 100)
+    //   - translation: string (required, max length 200)
+    //   - phonetic: string (required, max length 100)
+    //   - definitionEn: string (required, max length 1000)
+    //   - exampleSentence: string (required, max length 1000)
+    //   - stage: number (required, 1 to 6)
+    //   - createdAt: number (required, immutable)
+    //   - lastReviewDate: number (required)
+    //   - nextReviewDate: number (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+    
+    function hasOnlyAllowedFields(allowedFields) {
+      return request.resource.data.keys().hasOnly(allowedFields);
+    }
+    
+    function hasRequiredFields(requiredFields) {
+      return request.resource.data.keys().hasAll(requiredFields);
+    }
+    
+    function isImmutable(field) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([field]);
+    }
+    
+    function isValidString(fieldData, minLen, maxLen) {
+      return fieldData is string && fieldData.size() >= minLen && fieldData.size() <= maxLen;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    
+    function isValidUser() {
+      let data = request.resource.data;
+      return hasOnlyAllowedFields(['email', 'createdAt']) &&
+             hasRequiredFields(['email', 'createdAt']) &&
+             isValidEmail(data.email) &&
+             data.createdAt is number;
+    }
+    
+    function isValidWord() {
+      let data = request.resource.data;
+      return hasOnlyAllowedFields([
+               'original', 'translation', 'phonetic', 'definitionEn', 
+               'exampleSentence', 'stage', 'createdAt', 'lastReviewDate', 'nextReviewDate'
+             ]) &&
+             hasRequiredFields([
+               'original', 'translation', 'phonetic', 'definitionEn', 
+               'exampleSentence', 'stage', 'createdAt', 'lastReviewDate', 'nextReviewDate'
+             ]) &&
+             isValidString(data.original, 1, 100) &&
+             isValidString(data.translation, 1, 200) &&
+             isValidString(data.phonetic, 0, 100) &&
+             isValidString(data.definitionEn, 0, 1000) &&
+             isValidString(data.exampleSentence, 0, 1000) &&
+             data.stage is number && data.stage >= 1 && data.stage <= 11 &&
+             data.createdAt is number &&
+             data.lastReviewDate is number &&
+             data.nextReviewDate is number;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser();
+      allow update: if isOwner(userId) && isValidUser() && isImmutable('createdAt');
+      allow delete: if isOwner(userId);
+      
+      match /words/{wordId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidWord();
+        allow update: if isOwner(userId) && isValidWord() && isImmutable('createdAt');
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

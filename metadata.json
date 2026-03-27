@@ -1,0 +1,5 @@
+{
+  "name": "Elsa’s English Teacher",
+  "description": "A minimalist vocabulary retention app using the Ebbinghaus forgetting curve algorithm.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User's email address"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the user account was created"
+        }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "Word": {
+      "title": "Word",
+      "description": "A vocabulary word saved by the user",
+      "type": "object",
+      "properties": {
+        "original": {
+          "type": "string",
+          "description": "The original word or phrase"
+        },
+        "translation": {
+          "type": "string",
+          "description": "The translation of the word"
+        },
+        "phonetic": {
+          "type": "string",
+          "description": "The phonetic spelling"
+        },
+        "definitionEn": {
+          "type": "string",
+          "description": "English definition"
+        },
+        "exampleSentence": {
+          "type": "string",
+          "description": "An example sentence using the word"
+        },
+        "stage": {
+          "type": "number",
+          "description": "The current stage in the spaced repetition algorithm (1-6)"
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "Timestamp when the word was added"
+        },
+        "lastReviewDate": {
+          "type": "number",
+          "description": "Timestamp of the last review"
+        },
+        "nextReviewDate": {
+          "type": "number",
+          "description": "Timestamp for the next scheduled review"
+        }
+      },
+      "required": [
+        "original",
+        "translation",
+        "phonetic",
+        "definitionEn",
+        "exampleSentence",
+        "stage",
+        "createdAt",
+        "lastReviewDate",
+        "nextReviewDate"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles"
+    },
+    "/users/{userId}/words/{wordId}": {
+      "schema": {
+        "$ref": "#/entities/Word"
+      },
+      "description": "Stores vocabulary words for a specific user"
+    }
+  }
+}
