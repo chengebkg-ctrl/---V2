@@ -261,7 +261,7 @@ const App: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-sky-100 via-white to-cyan-100 text-sky-900 relative overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-sky-100 via-white to-cyan-100 text-sky-900 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwZWE1ZTkiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTEgMjB2LTYiLz48cGF0aCBkPSJNMTMgMjB2LTYiLz48cGF0aCBkPSJNMTEgNHY2Ii8+PHBhdGggZD0iTTEzIDR2NiIvPjxwYXRoIGQ9Ik0yMCAxMWgtNiIvPjxwYXRoIGQ9Ik0yMCAxM2gtNiIvPjxwYXRoIGQ9Ik00IDExaDYiLz48cGF0aCBkPSJNNCAxM2g2Ii8+PHBhdGggZD0ibTE2LjI0IDE2LjI0LTQuMjQtNC4yNCIvPjxwYXRoIGQ9Im0xNy42NiAxNC44My00LjI0LTQuMjQiLz48cGF0aCBkPSJtNi4zNCA2LjM0IDQuMjQgNC4yNCIvPjxwYXRoIGQ9Im03Ljc2IDcuNzYgNC4yNCA0LjI0Ii8+PHBhdGggZD0ibTE2LjI0IDcuNzYtNC4yNCA0LjI0Ii8+PHBhdGggZD0ibTE3LjY2IDkuMTctNC4yNCA0LjI0Ii8+PHBhdGggZD0ibTYuMzQgMTcuNjYgNC4yNC00LjI0Ii8+PHBhdGggZD0ibTcuNzYgMTYuMjQgNC4yNC00LjI0Ii8+PC9zdmc+')] bg-[length:60px_60px] opacity-10"></div>
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-sky-300/30 rounded-full blur-3xl"></div>
@@ -276,7 +276,7 @@ const App: React.FC = () => {
             Install App
           </button>
         )}
-        <div className="bg-white/80 backdrop-blur-md p-10 rounded-[3rem] shadow-[0_8px_30px_rgba(14,165,233,0.15)] max-w-md w-full border-4 border-white text-center space-y-10 relative z-10 my-8">
+        <div className="bg-white/80 backdrop-blur-md p-6 sm:p-10 rounded-[3rem] shadow-[0_8px_30px_rgba(14,165,233,0.15)] max-w-md w-full border-4 border-white text-center space-y-6 sm:space-y-10 relative z-10 my-4 sm:my-8">
           <div className="absolute top-6 left-6">
             <span className="text-[10px] font-black bg-gradient-to-r from-sky-400 to-cyan-400 text-white px-3 py-1 rounded-full shadow-sm">v2.2</span>
           </div>
@@ -298,7 +298,7 @@ const App: React.FC = () => {
               <Undo2 size={18} strokeWidth={2.5} />
             </button>
           </div>
-          <div className="flex justify-center pt-8">
+          <div className="flex justify-center pt-4 sm:pt-8">
             <div className="w-48 h-56 bg-gradient-to-br from-sky-100 to-cyan-100 rounded-[2rem] flex items-center justify-center text-sky-500 shadow-inner border-4 border-white relative overflow-visible transform rotate-2 hover:rotate-0 transition-transform duration-300">
               <div className="absolute -top-3 -right-3 text-4xl animate-sparkle z-20 drop-shadow-md">✨</div>
               <div className="w-full h-full rounded-[1.8rem] overflow-hidden relative z-10 shadow-sm bg-sky-50 flex items-center justify-center">
@@ -306,6 +306,7 @@ const App: React.FC = () => {
                   src={`/elsa.jpg?t=${Date.now()}`}
                   alt="Elsa" 
                   className="w-full h-full object-cover object-top absolute inset-0 z-20"
+                  referrerPolicy="no-referrer"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
@@ -314,14 +315,14 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="space-y-4">
-            <h1 className="text-5xl font-black text-sky-900 tracking-tight drop-shadow-sm">Magic Words</h1>
-            <p className="text-sky-600/80 text-base font-medium">Learn English with Elsa!</p>
+          <div className="space-y-2 sm:space-y-4">
+            <h1 className="text-4xl sm:text-5xl font-black text-sky-900 tracking-tight drop-shadow-sm">Magic Words</h1>
+            <p className="text-sky-600/80 text-sm sm:text-base font-medium">Learn English with Elsa!</p>
           </div>
-          <div className="pt-4">
+          <div className="pt-2 sm:pt-4">
             <button
               onClick={handleLogin}
-              className="w-full py-4 bg-gradient-to-r from-sky-400 to-cyan-400 text-white rounded-2xl font-black uppercase tracking-wider hover:from-sky-500 hover:to-cyan-500 transition-all shadow-[0_8px_20px_rgba(14,165,233,0.3)] hover:shadow-[0_8px_25px_rgba(14,165,233,0.4)] hover:-translate-y-1 border-2 border-white flex items-center justify-center gap-3"
+              className="w-full py-3 sm:py-4 bg-gradient-to-r from-sky-400 to-cyan-400 text-white rounded-2xl font-black uppercase tracking-wider hover:from-sky-500 hover:to-cyan-500 transition-all shadow-[0_8px_20px_rgba(14,165,233,0.3)] hover:shadow-[0_8px_25px_rgba(14,165,233,0.4)] hover:-translate-y-1 border-2 border-white flex items-center justify-center gap-3"
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
