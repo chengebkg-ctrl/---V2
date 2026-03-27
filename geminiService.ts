@@ -10,8 +10,12 @@ export interface TranslationResult {
 
 export const getTranslation = async (text: string): Promise<TranslationResult> => {
   try {
-    // Using the user-provided key directly for testing as requested
-    const key = 'AIzaSyBZsmIpZqfZM4a_paK9eam8BkhCsN4wFmE';
+    // Use the environment variable provided by Vite/AI Studio
+    const key = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    
+    if (!key) {
+      throw new Error("API key is missing. Please set GEMINI_API_KEY in your environment.");
+    }
     
     const ai = new GoogleGenAI({ apiKey: key });
     
