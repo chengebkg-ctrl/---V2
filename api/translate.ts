@@ -1,17 +1,24 @@
-import express from 'express';
-import cors from 'cors';
-import { createServer as createViteServer } from 'vite';
-import path from 'path';
 import { GoogleGenAI, Type } from '@google/genai';
 
-const app = express();
-const PORT = 3000;
+export default async function handler(req: any, res: any) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
 
-app.use(cors());
-app.use(express.json());
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-// Backend API route for translation
-app.post('/api/translate', async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
     const { text } = req.body;
     if (!text) {
@@ -61,31 +68,9 @@ app.post('/api/translate', async (req, res) => {
       }
     }
 
-    res.json(parsedResult);
+    res.status(200).json(parsedResult);
   } catch (error: any) {
     console.error('Translation API Error:', error);
     res.status(500).json({ error: error.message || 'Failed to translate' });
   }
-});
-
-async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*all', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
 }
-
-startServer();
